@@ -3,7 +3,12 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session:
+        handler_id: null                # Default PHP session handler
+        cookie_secure: auto             # HTTPS only
+        cookie_samesite: none           # Required for cross-site cookies (SPA/API)
+        cookie_httponly: true           # Prevent access via JS
+        cookie_lifetime: 0              # Session ends when browser closes
 
     #esi: true
     #fragments: true
