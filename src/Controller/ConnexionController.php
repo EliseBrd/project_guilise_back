@@ -12,14 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ConnexionController extends AbstractController
 {
-
-    /**
-     * @Route("/connexion")
-     */
-    public function index(): Response
-    {
-    }
-
     #[Route('/api/logout', name: 'api_logout', methods: ['POST'])]
     public function logout(SessionInterface $session): JsonResponse
     {
