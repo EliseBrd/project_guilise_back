@@ -21,7 +21,7 @@ class ProfileController extends AbstractController
         if (!$user) {
             // Pas connecté
             return $this->json(['error' => 'Unauthorized'], 401);
-        }
+        }   
 
         return $this->json([
             'email' => $user->getEmail(),

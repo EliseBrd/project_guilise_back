@@ -10,12 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-
-
-
-    //#[Route("/api/login", name:'app_login')]
-    //public function login(): Response
-    //{
-//
-    //}
+    #[Route('/', name: 'home', methods: ['GET'])]
+    public function notFound(): Response
+    {
+        return new Response('Not Found', 404);
+    }
 }
