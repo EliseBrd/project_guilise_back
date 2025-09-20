@@ -19,5 +19,5 @@ RUN composer install --no-interaction --optimize-autoloader
 # Exposer le port 8000
 EXPOSE 8000
 
-# Lancer Symfony avec le serveur PHP intégré
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+# Lancer Symfony et exécuter la migration Doctrine au démarrage
+CMD php bin/console doctrine:m:m --no-interaction && php -S 0.0.0.0:8000 -t public
