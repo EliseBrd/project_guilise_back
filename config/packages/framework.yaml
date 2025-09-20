@@ -1,12 +1,11 @@
-# see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-    secret: '%env(APP_SECRET)%'
+    session:
+        handler_id: null
+        cookie_secure: false       # HTTP local
+        cookie_samesite: lax       # 'lax' pour dev local cross-origin
+        cookie_httponly: true
+        cookie_lifetime: 0
 
-    # Note that the session will be started ONLY if you read or write from it.
-    session: true
-
-    #esi: true
-    #fragments: true
 
 when@test:
     framework:
