@@ -34,7 +34,7 @@ class RegisterController extends AbstractController
         }
 
         //check if the password is strong enough
-        if (!$entropyService->checkTotalEntropy($password, 36)) {
+        if (!$entropyService->checkEntropieTheorique($password, 36)) {
             return $this->json(['error' => 'Mot de passe trop faible.'], 400);
         }
 

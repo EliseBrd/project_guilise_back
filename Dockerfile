@@ -1,23 +1,23 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# Installer dépendances utiles
+# Installer les extensions nécessaires
 RUN apt-get update && apt-get install -y \
-    git unzip libicu-dev libpq-dev \
-    && docker-php-ext-install intl pdo pdo_mysql
+    git unzip libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Activer mod_rewrite pour Symfony
-RUN a2enmod rewrite
-
-# Copier les fichiers
 WORKDIR /var/www/html
-COPY . .
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-RUN composer install --no-interaction
 
-# Droits
-RUN chown -R www-data:www-data /var/www/html/var
+# Copier le code Symfony
+COPY . .
 
+# Installer les dépendances
+RUN composer install --no-interaction --optimize-autoloader
+
+# Exposer le port 8000
 EXPOSE 8000
-CMD ["apache2-foreground"]
+
+# Lancer Symfony avec le serveur PHP intégré
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]

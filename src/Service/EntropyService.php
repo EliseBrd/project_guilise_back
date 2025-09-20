@@ -7,58 +7,38 @@ class EntropyService
 
 
     private int $AvailableCaractersNbr = 95;
-    public function calculateEntropy(string $string): float
+
+    public function calculerEntropieTheorique(string $chaine): float
     {
-        $length = strlen($string);
-        if ($length === 0) {
+        if (empty($chaine)) {
             return 0.0;
         }
 
-        $entropy = 0.0;
-        for ($i = 32; $i <= 126; $i++) {
-            $count = substr_count($string, chr($i));
-            if ($count > 0) {
-                $p = $count / $length;
-                $entropy -= $p * log($p, 2);
-            }
+        // 1️⃣ Taille de l'alphabet selon types de caractères
+        $alphabetSize = 0;
+        if (preg_match('/[a-z]/', $chaine)) $alphabetSize += 26;
+        if (preg_match('/[A-Z]/', $chaine)) $alphabetSize += 26;
+        if (preg_match('/[0-9]/', $chaine)) $alphabetSize += 10;
+        if (preg_match('/[^a-zA-Z0-9]/', $chaine)) $alphabetSize += 33;
+
+        $longueur = strlen($chaine);
+
+        // 2️⃣ Entropie théorique (bits)
+        $entropy = log(pow($alphabetSize, $longueur), 2);
+
+        // 3️⃣ Pénalisation pour répétitions
+        $chars = str_split($chaine);
+        $uniqueChars = count(array_unique($chars));
+        if ($uniqueChars < $longueur) {
+            $repetitionPenalty = $longueur / $uniqueChars;
+            $entropy /= $repetitionPenalty;
         }
 
-        return $entropy; // entropie par caractère
+        return $entropy;
     }
 
-    public function calculateTotalEntropy(string $string): float
+    public function checkEntropieTheorique(string $chaine, float $threshold = 36.0): bool
     {
-        return $this->calculateEntropy($string) * strlen($string);
-    }
-
-    public function calculateFrequency(string $string): array
-    {
-        $length = strlen($string);
-        $frequencies = [];
-        for ($i = 32; $i <= 126; $i++) {
-            $frequencies[chr($i)] = $length > 0 ? substr_count($string, chr($i)) / $length : 0;
-        }
-        return $frequencies;
-    }
-
-    public function calculateVariance(string $string): float
-    {
-        $frequencies = $this->calculateFrequency($string);
-        $mean = 1 / $this->AvailableCaractersNbr;
-        $variance = 0.0;
-        foreach ($frequencies as $freq) {
-            $variance += pow($freq - $mean, 2);
-        }
-        return $variance / $this->AvailableCaractersNbr;
-    }
-
-    public function checkEntropy(string $string, float $threshold = 3.0): bool
-    {
-        return $this->calculateEntropy($string) >= $threshold;
-    }
-
-    public function checkTotalEntropy(string $string, float $threshold = 3.0): bool
-    {
-        return $this->calculateTotalEntropy($string) >= $threshold;
+        return $this->calculerEntropieTheorique($chaine) >= $threshold;
     }
 }
