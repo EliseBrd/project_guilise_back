@@ -1,17 +1,11 @@
-# see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-    secret: '%env(APP_SECRET)%'
-
-    # Note that the session will be started ONLY if you read or write from it.
     session:
-        handler_id: null                # Default PHP session handler
-        cookie_secure: auto             # HTTPS only
-        cookie_samesite: none           # Required for cross-site cookies (SPA/API)
-        cookie_httponly: true           # Prevent access via JS
-        cookie_lifetime: 0              # Session ends when browser closes
+        handler_id: null
+        cookie_secure: false       # HTTP local
+        cookie_samesite: lax       # 'lax' pour dev local cross-origin
+        cookie_httponly: true
+        cookie_lifetime: 0
 
-    #esi: true
-    #fragments: true
 
 when@test:
     framework:

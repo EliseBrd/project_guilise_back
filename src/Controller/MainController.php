@@ -11,11 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
 
-    /**
-     * @Route("/main")
-     */
-    public function index(): Response
-    {
-        return $this->render('main/index.html.twig');
-    }
+
+
+    //#[Route("/api/login", name:'app_login')]
+    //public function login(): Response
+    //{
+//
+    //}
 }
